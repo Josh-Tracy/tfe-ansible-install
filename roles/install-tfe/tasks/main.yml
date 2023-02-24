@@ -1,0 +1,30 @@
+---
+# tasks file for install-tfe
+- name: Create replicated.conf file
+  template:
+    src: templates/replicated.conf.j2
+    dest: "{{repl_conf_path}}"
+    mode: '0644'
+
+- name: Create TFE app settings json tfe-settings.json file
+  template:
+    src: templates/tfe-settings.json.j2
+    dest: "{{tfe_settings_path}}"
+    mode: '0644'
+
+- name: Generate install.sh initialization script with arguments
+  template: 
+    src: templates/install.j2
+    dest: "{{tfe_installer_dir}}/run_install.sh"
+    mode: '0755'
+
+
+- name: Run the `run_install.sh` script to start the install
+  shell: 
+  args:
+    chdir: "{{tfe_installer_dir}}"
+    cmd: "./run_install.sh"
+  register: install_out
+
+- debug: msg="{{ install_out }}"
+    

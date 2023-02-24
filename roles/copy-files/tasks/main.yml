@@ -1,0 +1,67 @@
+---
+# tasks file for copy-files
+- name: Create tfe installer directory
+  file:
+    path: "{{tfe_installer_dir}}"
+    state: directory
+    mode: '0755'
+
+- name: Download ./install.sh
+  when: not airgap_install
+  get_url:
+    url: https://install.terraform.io/ptfe/stable
+    dest: "{{tfe_installer_dir}}/install.sh"
+    mode: '0755'
+
+- name: Copy license file from control node if files_on_system is false
+  when:  not files_on_system
+  copy:
+    src: "files/{{license_name}}"
+    dest: "{{tfe_license_path}}"
+    mode: '0644'
+
+- name: Copy .arigap and replicated.tar.gz from control node if files_on_system is false and airgap_install is true
+  when:  (not files_on_system) and (airgap_install)
+  copy:
+    src: "{{ item.src }}" 
+    dest: "{{ item.dest }}"
+    mode: '0644'
+  loop:
+    - src: "files/{{airgap_bund_name}}"
+      dest: "{tfe_airgap_path}}"
+    - src: "files/{{replicated_tar_name}}"
+      dest: "{{repl_bundle_path}}"
+
+- name: Copy tfe certificate, cert key, and ca bundle from control node if files_on_system is false
+  when: not files_on_system
+  copy:
+    src: "{{ item.src }}" 
+    dest: "{{ item.dest }}"
+    mode: '0644'
+  loop:
+    - src: "files/{{tfe_cert_name}}"
+      dest: "{{tfe_config_dir}}"
+    - src: "files/{{tfe_privkey_name}}"
+      dest: "{{tfe_config_dir}}"
+    - src: "files/{{ca_bundle_name}}"
+      dest: "{{tfe_config_dir}}"
+
+- name: Unarchive replicated tarball for airgap install
+  when: airgap_install
+  unarchive:
+    src: "{{repl_bundle_path}}"
+    dest: "{{tfe_installer_dir}}"
+    remote_src: yes
+    
+
+
+
+
+###
+# if airgap = false
+# cp .rli
+# cp. certs - key - ca bundle
+
+# if airgap = true 
+# cp .airgap .rli. certs replicated tar install.sh
+###

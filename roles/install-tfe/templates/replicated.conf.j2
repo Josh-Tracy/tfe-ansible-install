@@ -1,0 +1,19 @@
+{
+  "DaemonAuthenticationType": "password",
+  "DaemonAuthenticationPassword": "{{ console_password }}",
+  "ImportSettingsFrom": "{{ tfe_settings_path }}",
+{% if airgap_install == true %}
+  "LicenseBootstrapAirgapPackagePath": "{{ tfe_airgap_path }}/{{ airgap_bund_name }}",
+{% else %}
+  "ReleaseSequence": "{{ tfe_release_sequence }}",
+{% endif %}
+  "LicenseFileLocation": "{{ tfe_license_path }}/{{ license_name }}",
+  "TlsBootstrapHostname": "{{ tfe_hostname }}",
+  "TlsBootstrapType": "{{ tls_bootstrap_type }}",
+{% if tls_bootstrap_type == "server-path" %}
+  "TlsBootstrapCert": "{{ tfe_config_dir }}/{{ tfe_cert_name }}",
+  "TlsBootstrapKey": "{{ tfe_config_dir }}/{{ tfe_privkey_name }}",
+{% endif %}
+  "RemoveImportSettingsFrom": {{ remove_import_settings_from }},
+  "BypassPreflightChecks": true
+}

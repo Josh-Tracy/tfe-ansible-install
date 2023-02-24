@@ -1,0 +1,22 @@
+- name : Install dependencies
+  hosts: tfe
+  roles:
+    - { role: install-dependencies, when: install_dependencies_enabled }
+
+- name : Copy / Download files to TFE host
+  hosts: tfe
+  become: yes
+  roles:
+    - { role: copy-files, when: copy_files_enabled }
+
+- name : Create the automated installation of TFE and install
+  hosts: tfe
+  become: yes
+  roles:
+    - { role: install-tfe, when: install_tfe_enabled }
+
+- name : Uninstall TFE
+  hosts: tfe
+  become: yes
+  roles:
+    - { role: uninstall-tfe, when: uninstall_tfe_enabled }

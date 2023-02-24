@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+{{tfe_installer_dir}}/install.sh \
+{% if airgap_install == true %}
+    airgap \
+{% endif %}
+{% if http_proxy %}
+    http-proxy={{http_proxy}} \
+{% else %}
+    no-proxy \
+{% endif %}
+{% if extra_no_proxy %}
+    additional-no-proxy={{extra_no_proxy}} \
+{% endif %}
+{% if enable_active_active == 1 %}
+    disable-replicated-ui \
+{% endif %}
+{% if install_docker_before == true %}
+    no-docker \
+{% endif %}
+    private-address={{tfe_private_ip}} \
+    public-address={{tfe_private_ip}}

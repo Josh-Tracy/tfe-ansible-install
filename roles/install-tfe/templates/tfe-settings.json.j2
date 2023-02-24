@@ -1,0 +1,141 @@
+{
+  "aws_access_key_id": {},
+  "aws_instance_profile": {},
+  "aws_secret_access_key": {},
+  "azure_account_key": {},
+  "azure_account_name": {},
+  "azure_container": {},
+  "azure_endpoint": {},
+  "backup_token": {},
+  "ca_certs": {
+    "value": "{{ca_cert_data}}"
+  },
+  "capacity_concurrency": {
+      "value": "{{capacity_concurrency}}"
+  },
+  "capacity_cpus": {},
+  "capacity_memory": {
+      "value": "{{capacity_memory}}"
+  },
+  "custom_image_tag": {},
+{% if mounted_disk %}
+  "disk_path": {
+    "value": "{{disk_path}}"
+  },
+{% else %}
+  "disk_path": {},
+{% endif %}
+
+  "enable_active_active": {
+    "value": "{{enable_active_active}}"
+  },
+  "enable_metrics_collection": {
+      "value": "{{enable_metrics_collection}}"
+  },
+  "enc_password": {
+      "value": "{{encryption_password}}"
+  },
+  "extern_vault_addr": {},
+  "extern_vault_enable": {
+      "value": "0"
+  },
+  "extern_vault_path": {},
+  "extern_vault_propagate": {},
+  "extern_vault_role_id": {},
+  "extern_vault_secret_id": {},
+  "extern_vault_token_renew": {},
+  "extra_no_proxy": {
+    "value": "{{extra_no_proxy}}"
+  },
+  "force_tls": {
+    "value": "{{force_tls}}"
+  },
+  "gcs_bucket": {},
+  "gcs_credentials": {},
+  "gcs_project": {},
+  "hairpin_addressing": {
+    "value": "{{hairpin_addressing}}"
+  },
+  "hostname": {
+      "value": "{{tfe_hostname}}"
+  },
+  "iact_subnet_list": {},
+  "iact_subnet_time_limit": {
+      "value": "60"
+  },
+  "installation_type": {
+      "value": "production"
+  },
+  "log_forwarding_config": {
+    "value": "{{log_forwarding_config}}"
+  },
+  "log_forwarding_enabled": {
+    "value": "{{log_forwarding_enabled}}"
+  },
+  "metrics_endpoint_enabled": {
+      "value": "{{metrics_endpoint_enabled}}"
+  },
+  "metrics_endpoint_port_http": {
+      "value": "{{metrics_endpoint_port_http}}"
+  },
+  "metrics_endpoint_port_https": {
+      "value": "{{metrics_endpoint_port_https}}"
+  },
+  "pg_dbname": {
+      "value": "{{pg_dbname}}"
+  },
+  "pg_extra_params": {
+      "value": "sslmode=require"
+  },
+  "pg_netloc": {
+      "value": "{{pg_netloc}}"
+  },
+  "pg_password": {
+      "value": "{{pg_password}}"
+  },
+  "pg_user": {
+      "value": "{{pg_user}}"
+  },
+  "placement": {
+      "value": "placement_s3"
+  },
+  "production_type": {
+      "value": "{{production_type}}"
+  },
+  "redis_host": {
+    "value": "{{redis_host}}"
+  },
+  "redis_pass": {
+    "value": "{{redis_pass}}"
+  },
+  "redis_port": {
+    "value": "{{redis_port}}"
+  },
+  "redis_use_password_auth": {
+    "value": "{{redis_use_password_auth}}"
+  },
+  "redis_use_tls": {
+    "value": "{{redis_use_tls}}"
+  },
+  "restrict_worker_metadata_access": {
+    "value": "{{restrict_worker_metadata_access}}"
+  },
+  "s3_bucket": {
+      "value": "{{s3_app_bucket_name}}"
+  },
+  "s3_endpoint": {
+      "value": "{{s3_app_endpoint_url}}"
+  },
+  "s3_region": {
+      "value": "{{s3_app_bucket_region}}"
+  },
+  "s3_sse": {},
+  "s3_sse_kms_key_id": {},
+  "tbw_image": {
+      "value": "{{tbw_image}}"
+  },
+  "tls_ciphers": {},
+  "tls_vers": {
+      "value": "tls_1_2_tls_1_3"
+  }
+}

@@ -1,0 +1,20 @@
+---
+# tasks file for install-dependencies
+- name: Add Docker GPG apt Key
+  when: ansible_facts['distribution'] == "Ubuntu"
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  when: ansible_facts['distribution'] == "Ubuntu"
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Update apt and install docker-ce
+  when: ansible_facts['distribution'] == "Ubuntu"
+  become: yes
+  apt:
+    name: docker-ce=5:20.10.7~3-0~ubuntu-focal
+    update_cache: true
