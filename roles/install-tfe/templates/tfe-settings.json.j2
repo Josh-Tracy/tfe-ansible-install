@@ -81,21 +81,41 @@
   "metrics_endpoint_port_https": {
       "value": "{{metrics_endpoint_port_https}}"
   },
+{% if mounted_disk %}
+  "pg_dbname": {},
+{% else %}
   "pg_dbname": {
       "value": "{{pg_dbname}}"
   },
+{% endif %}
+{% if mounted_disk %}
+  "pg_extra_params": {},
+{% else %}
   "pg_extra_params": {
       "value": "sslmode=require"
   },
+{% endif %}
+{% if mounted_disk %}
+  "pg_netloc": {},
+{% else %}
   "pg_netloc": {
       "value": "{{pg_netloc}}"
   },
+{% endif %}
+{% if mounted_disk %}
+  "pg_password": {},
+{% else %}
   "pg_password": {
       "value": "{{pg_password}}"
   },
+{% endif %}
+{% if mounted_disk %}
+  "pg_user": {},
+{% else %}
   "pg_user": {
       "value": "{{pg_user}}"
   },
+{% endif %}
   "placement": {
       "value": "placement_s3"
   },

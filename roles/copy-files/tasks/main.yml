@@ -13,6 +13,13 @@
     dest: "{{tfe_installer_dir}}/install.sh"
     mode: '0755'
 
+- name: Copy ./install.sh
+  when: (not files_on_system) and (airgap_install) 
+  copy:
+    src: "files/install.sh"
+    dest: "{{tfe_installer_dir}}/install.sh"
+    mode: '755'
+
 - name: Copy license file from control node if files_on_system is false
   when:  not files_on_system
   copy:
@@ -28,7 +35,7 @@
     mode: '0644'
   loop:
     - src: "files/{{airgap_bund_name}}"
-      dest: "{tfe_airgap_path}}"
+      dest: "{{tfe_airgap_path}}"
     - src: "files/{{replicated_tar_name}}"
       dest: "{{repl_bundle_path}}"
 
@@ -49,7 +56,7 @@
 - name: Unarchive replicated tarball for airgap install
   when: airgap_install
   unarchive:
-    src: "{{repl_bundle_path}}"
+    src: "{{repl_bundle_path}}/{{replicated_tar_name}}"
     dest: "{{tfe_installer_dir}}"
     remote_src: yes
     

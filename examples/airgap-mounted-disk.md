@@ -1,0 +1,1 @@
+# Airgap Install with Mounted Disk Example
