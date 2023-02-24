@@ -18,12 +18,10 @@
        (?i)I can now clean up the Docker images for you: "2"
   register: uninstall_out
 
+- debug: msg="{{ uninstall_out }}"
+
 - name: Remove mounted disk path
   when: mounted_disk
   file:
     path: "{{disk_path}}"
     state: absent
-
-
-
-- debug: msg="{{ uninstall_out }}"
