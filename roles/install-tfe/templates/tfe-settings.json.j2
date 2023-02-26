@@ -1,7 +1,19 @@
 {
+{% if mounted_disk %}
   "aws_access_key_id": {},
+{% else %}
+  "aws_access_key_id": {
+    "value": "{{aws_access_key_id}}"
+  },
+{% endif %}
   "aws_instance_profile": {},
+{% if mounted_disk %}
   "aws_secret_access_key": {},
+{% else %}
+  "aws_secret_access_key": {
+  "value": "{{aws_secret_access_key}}"
+  },
+{% endif %}
   "azure_account_key": {},
   "azure_account_name": {},
   "azure_container": {},
@@ -140,17 +152,41 @@
   "restrict_worker_metadata_access": {
     "value": "{{restrict_worker_metadata_access}}"
   },
+{% if mounted_disk %}
+  "s3_bucket": {},
+{% else %}
   "s3_bucket": {
       "value": "{{s3_app_bucket_name}}"
   },
+{% endif %}
+{% if custom_s3_endpoint %}
   "s3_endpoint": {
-      "value": "{{s3_app_endpoint_url}}"
+    "value": "{{s3_app_endpoint_url}}"
   },
+{% else %}
+  "s3_endpoint": {},
+{% endif %}
+{% if mounted_disk %}
+  "s3_region": {},
+{% else %}
   "s3_region": {
       "value": "{{s3_app_bucket_region}}"
   },
+{% endif %}
+{% if s3_use_kms %}
+  "s3_sse": {
+  "value": "aws:kms"
+  },
+{% else %}
   "s3_sse": {},
+{% endif %}
+{% if s3_use_kms %}
+  "s3_sse_kms_key_id": {
+  "value": "{{s3_sse_kms_key_id}}"
+  },
+{% else %}
   "s3_sse_kms_key_id": {},
+{% endif %}
   "tbw_image": {
       "value": "{{tbw_image}}"
   },

@@ -1,16 +1,16 @@
-# Airgap Install with Mounted Disk Example
+# Airgap Install with External Services Example
 
-Below is an example `group_vars/tfe.yaml` when installing TFE as mounted disk using airgap mode. All values are examples only.
+Below is an example `group_vars/tfe.yaml` when installing TFE as External Services using airgap mode. All values are examples only.
 
 ```YAML
 # Enable or Disable Ansible Roles
-install_dependencies_enabled: true
+install_dependencies_enabled: false
 copy_files_enabled: true
 install_tfe_enabled: true
-uninstall_tfe_enabled: false 
+uninstall_tfe_enabled: false
 
 # SSH Settings
-ansible_ssh_private_key_file: ansublerser-ssh.pem
+ansible_ssh_private_key_file: ansibleuser-ssh.pem
 ansible_user: ansibleuser
 
 # Airgap Settings
@@ -40,7 +40,8 @@ ca_bundle_name: tfe-ca-bundle.pem
 # Custom certificate authority (CA) bundle. 
 # JSON does not allow raw newline characters, so replace any newlines in the data with \n.
 # The command awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' tfe-ca-bundle.pem can assist.
-ca_cert_data: -----BEGIN CERTIFICATE-----\nMIIFIDCCBAigAwIBAgISA0t9452nQ7vgwYP4F+v/...+Q=\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIFFjCCAv6gAwIBAgIRAJErCErPDBinU/bWLiWnX1owDQYJKoZIhvcNAQELBQAw\nTzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3Vy...+XWYp6rjd5JW1zbVWEkLNxE7GJThEUG3szgBVGP7pSWTUTsqX\nnLRbwHOoq7hHwg==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIFYDCCBEigAwIBAgIQQAF3ITfU6UK47naqPGQKtzANBgkqhkiG9w0BAQsFADA/\nMSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT\nDkRTVCBSb290IENB...+qR9sdjoSYKEBpsr6GtPAQw4dy753ec5\n-----END CERTIFICATE-----\n
+ca_cert_data: -----BEGIN CERTIFICATE-----\nMIIFIDCCBAigAwIBAgISA0t9452nQ7vgwYP4F+v/....
++qR9sdjoSYKEBpsr6GtPAQw4dy753ec5\n-----END CERTIFICATE-----\n
 
 # TFE File Names
 license_name: tfe-license.rli
@@ -54,7 +55,7 @@ console_password: mytfeconsolepass
 encryption_password: mytfeencpass
 
 # TFE install settings - Replicated config file
-tfe_hostname: tfe.company.com
+tfe_hostname: tfe.mycompany.com
 tfe_release_sequence: 0
 tls_bootstrap_type: server-path
 remove_import_settings_from: "false"
@@ -63,11 +64,13 @@ remove_import_settings_from: "false"
 tfe_private_ip: 1.2.3.4
 
 # Mounted disk or External Services
-mounted_disk: true
+mounted_disk: false
 
 # TFE App Settings - tfe-settings.json. True = 1 False = 0
-production_type: disk
-disk_path: /opt/terraform-enterprise
+aws_access_key_id: ABC123ZXCV5678NOTREAL
+aws_secret_access_key: abc123EFGhi5678notreal
+production_type: external
+disk_path: null
 capacity_concurrency: 10
 capacity_memory: 512
 enable_active_active: 0
@@ -78,14 +81,17 @@ metrics_endpoint_port_https: null
 extra_no_proxy: null
 force_tls: 0
 hairpin_addressing: 0
-pg_dbname: null
-pg_netloc: null
-pg_password: null
-pg_user: null
+pg_dbname: tfe
+pg_netloc: tfe.postgres.database.azure.com:5432
+pg_password: mypostpass1!
+pg_user: tfeadmin
 restrict_worker_metadata_access: 1
+custom_s3_endpoint: false
 s3_app_endpoint_url: null
-s3_app_bucket_name: null
-s3_app_bucket_region: null
+s3_app_bucket_name: tfe-app-1234
+s3_app_bucket_region: us-east-1
+s3_use_kms: true
+s3_sse_kms_key_id: arn:aws:kms:us-east-1:123456789:key/1111111-2222-3333-444-5555555555
 tbw_image: null
 http_proxy: null
 
@@ -102,3 +108,4 @@ redis_use_tls: null
 log_forwarding_enabled: 0
 log_forwarding_config: null
 ```
+
