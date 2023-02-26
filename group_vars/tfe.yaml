@@ -1,8 +1,7 @@
 # Enable or Disable Ansible Roles
-install_dependencies_enabled: false
+install_dependencies_enabled: true
 copy_files_enabled: true
 install_tfe_enabled: true
-uninstall_tfe_enabled: false
 
 # SSH Settings
 ansible_ssh_private_key_file: tfeadmin-key-josh.pem
@@ -67,7 +66,7 @@ production_type: external
 disk_path: null
 capacity_concurrency: 10
 capacity_memory: 512
-enable_active_active: 0
+enable_active_active: 1
 enable_metrics_collection: 0
 metrics_endpoint_enabled: 0
 metrics_endpoint_port_http: null
@@ -91,11 +90,12 @@ http_proxy: null
 
 
 # TFE App Settings - active/active - True = 1 False = 0
-redis_host: null
-redis_pass: null
-redis_port: null
-redis_use_password_auth: null
-redis_use_tls: null
+redis_host: tferedis.redis.cache.windows.net
+redis_pass: 88gpYDAH0qt73EpT0amSS5rXrhpJ17rZAAzCaNPDw7Y=
+redis_port: 6380
+redis_use_password_auth: 1
+redis_use_tls: 1
+disable_replicated_console: true
 
 
 # TFE App settints - Log Forwarding - True = 1 False = 0

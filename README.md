@@ -1,23 +1,28 @@
+# Ansible Playbooks for Install Terraform Enterprise
+
+## Notice
+Hashicorp does not create or maintain this repository. This is a personal repository.
+
 ## When to Use
-When there is a need to install Terraform Enterprise on long lived, static, virtual machines or bare-metal servers. If installing on a cloud service provider, such as AWS, Azure, or GCP, the preferred method is to use Terraform open source to automate this deployment in an autoscaling group by utilizing user_data scripts.
+When there is a need to install Terraform Enterprise on long lived, static, virtual machines or bare-metal servers. If installing on a cloud service provider, such as AWS, Azure, or GCP, the preferred method is to use Terraform open source to automate this deployment in an autoscaling group utilizing user_data scripts.
 
 ## How to Use
-`playbook.yaml` is the main entry point for installing TFE with Ansible. It calls the specific roles you enable depending on what you are trying to accomplish. You can enable and disable roles at will by editing the variables in `group_vars/tfe.yaml`
+`install.yaml` is the main entry point for installing TFE with Ansible. It calls the specific roles you enable depending on what you are trying to accomplish. You can enable and disable roles at will by editing the variables in `group_vars/tfe.yaml`
 
 Example playbook.yaml:
 
 ```YAML
+- name : Install dependencies
+  hosts: tfe
+  become: yes
+  roles:
+    - { role: install-dependencies, when: install_dependencies_enabled }
+
 - name : Create the automated installation of TFE and install
   hosts: tfe
   become: yes
   roles:
     - { role: install-tfe, when: install_tfe_enabled }
-
-- name : Uninstall TFE
-  hosts: tfe
-  become: yes
-  roles:
-    - { role: uninstall-tfe, when: uninstall_tfe_enabled }
 ```
 
 Example of enabling and disabling roles:
@@ -26,15 +31,14 @@ Example of enabling and disabling roles:
 install_dependencies_enabled: false
 copy_files_enabled: true
 install_tfe_enabled: true
-uninstall_tfe_enabled: false
 ```
 ## Setup - Verify Host Connection
 
-1. Add the ip address or FQDN of the server that TFE will be installed on to the `hosts` file
-2. Put the ssh private key .pem in this directory, or somewhere ansible can reach it on the host
-3. Add the path the to ssh private key and the ssh username to the `group_vars/tfe-.yaml` file
+1. Add the ip address or FQDN of the server that TFE will be installed on to the `hosts` file under the `[tfe]` host group.
+2. Put the ssh private key .pem in this directory, or somewhere ansible can reach it on the ansible control node.
+3. Add the path the to ssh private key and the ssh username to the `group_vars/tfe.yaml` file.
 4. Run `ansible tfe -m ping -i hosts` to test the connection to the host (note: This may fail if ICMP pings are blocked)
-5. Populate the rest of the variables in `group_vars/tfe.yaml` using the table ___ here ___ as a guide.
+5. Populate the rest of the variables in `group_vars/tfe.yaml` using the table in this README as a guide.
 
 
 ## Setup - Install Files and TLS Certificates
@@ -43,7 +47,7 @@ A variable named `files_on_system` determines if files will be copied from the c
 ## Setup - Populate Input Variables
 Go through the availalbe input variables in `group_vars/tfe.yaml` and configure them to match your desired install. 
 
-## Running the Playbook
+## Running the Playbook - Standalone TFE server
 Once you are ready to install TFE run the command `ansible-playbook -i hosts playbook.yaml`. Time to complete will vary based on type of install (airgap vs online), network connections, and compute resources. Airgap installs take the longest if you have to copy the .airgap bundle to the remote host. 
 
 Once the playbook is complete, Ansible should return a debug message similiar to:
@@ -55,6 +59,9 @@ Once the playbook is complete, Ansible should return a debug message similiar to
 ```
 
 You should now be able to access the replicated admin console at port 8800, but TFE will take another 10 to 15 minutes to finish the automated install. You can watch this from the dashboard. 
+
+## Active/Active
+For active/active installs, follow the directions in `examples/active-active.md`
 
 ### Variables
 

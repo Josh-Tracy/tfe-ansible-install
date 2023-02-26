@@ -1,0 +1,5 @@
+- name : Uninstall TFE
+  hosts: tfe
+  become: yes
+  roles:
+    - role: uninstall-tfe

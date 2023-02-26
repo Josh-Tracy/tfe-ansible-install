@@ -1,5 +1,6 @@
 - name : Install dependencies
   hosts: tfe
+  become: yes
   roles:
     - { role: install-dependencies, when: install_dependencies_enabled }
 
@@ -14,9 +15,3 @@
   become: yes
   roles:
     - { role: install-tfe, when: install_tfe_enabled }
-
-- name : Uninstall TFE
-  hosts: tfe
-  become: yes
-  roles:
-    - { role: uninstall-tfe, when: uninstall_tfe_enabled }
