@@ -37,7 +37,7 @@ install_tfe_enabled: true
 1. Add the ip address or FQDN of the server that TFE will be installed on to the `hosts.yaml` file under the `tfe` host group.
 2. Put the ssh private key .pem in this directory, or somewhere ansible can reach it on the ansible control node.
 3. Add the path the to ssh private key and the ssh username to the `group_vars/tfe.yaml` file.
-4. Run `ansible tfe -m ping -i hosts` to test the connection to the host (note: This may fail if ICMP pings are blocked)
+4. Run `ansible tfe -m ping -i hosts.yaml` to test the connection to the host (note: This may fail if ICMP pings are blocked)
 5. Populate the rest of the variables in `group_vars/tfe.yaml` using the table in this README as a guide and the examples directory.
 
 
@@ -48,7 +48,7 @@ A variable named `files_on_system` determines if files will be copied from the c
 Go through the availalbe input variables in `group_vars/tfe.yaml` and configure them to match your desired install. 
 
 ## Running the Playbook - Standalone TFE server
-Once you are ready to install TFE run the command `ansible-playbook -i hosts install.yaml`. Time to complete will vary based on type of install (airgap vs online), network connections, and compute resources. Airgap installs take the longest if you have to copy the .airgap bundle to the remote host. 
+Once you are ready to install TFE run the command `ansible-playbook -i hosts.yaml install.yaml`. Time to complete will vary based on type of install (airgap vs online), network connections, and compute resources. Airgap installs take the longest if you have to copy the .airgap bundle to the remote host. 
 
 Once the playbook is complete, Ansible should return a debug message similiar to:
 
