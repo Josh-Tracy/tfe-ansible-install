@@ -9,7 +9,8 @@ When there is a need to install Terraform Enterprise on long lived, static, virt
 ## Supported Operating Systems
 Only the following operating systems are supported. If you wish to use one not listed here, update `role/install-dependencies/tasks/main.yml` to download packages for the desired OS.
 
-- Ubuntu
+- Ubuntu [focal]
+- RHEL [7]
 
 ## How to Use
 `install.yaml` is the main entry point for installing TFE with Ansible. It calls the specific roles you enable depending on what you are trying to accomplish. You can enable and disable roles at will by editing the variables at the top of `group_vars/tfe.yaml`. This saves time when troubleshooting and running the playbook over and over.

@@ -1,3 +1,7 @@
+# RHEL7 Specific
+# If docker_from_centos is false, the task assumes repos with docker packages are enabled on the host
+docker_from_centos: true
+
 # Enable or Disable Ansible Roles
 install_dependencies_enabled: true
 copy_files_enabled: true
