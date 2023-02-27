@@ -7,7 +7,6 @@ Below is an example `group_vars/tfe.yaml` when installing TFE as External Servic
 install_dependencies_enabled: false
 copy_files_enabled: true
 install_tfe_enabled: true
-uninstall_tfe_enabled: false
 
 # SSH Settings
 ansible_ssh_private_key_file: ansibleuser-ssh.pem
@@ -59,9 +58,6 @@ tfe_hostname: tfe.mycompany.com
 tfe_release_sequence: 0
 tls_bootstrap_type: server-path
 remove_import_settings_from: "false"
-
-# Should be eth0 or equivilent, not docker0
-tfe_private_ip: 1.2.3.4
 
 # Mounted disk or External Services
 mounted_disk: false

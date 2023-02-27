@@ -53,9 +53,6 @@ tfe_release_sequence: 0
 tls_bootstrap_type: server-path
 remove_import_settings_from: "false"
 
-# Should be eth0 or equivilent, not docker0
-tfe_private_ip: 172.30.0.4
-
 # Mounted disk or External Services
 mounted_disk: false
 
@@ -66,14 +63,13 @@ production_type: external
 disk_path: null
 capacity_concurrency: 10
 capacity_memory: 512
-enable_active_active: 1
 enable_metrics_collection: 0
 metrics_endpoint_enabled: 0
 metrics_endpoint_port_http: null
 metrics_endpoint_port_https: null
 extra_no_proxy: null
 force_tls: 0
-hairpin_addressing: 0
+hairpin_addressing: 1
 pg_dbname: tfe
 pg_netloc: joshtfe.postgres.database.azure.com:5432
 pg_password: mypostpass1!
@@ -90,12 +86,12 @@ http_proxy: null
 
 
 # TFE App Settings - active/active - True = 1 False = 0
+enable_active_active: 1
 redis_host: tferedis.redis.cache.windows.net
 redis_pass: 88gpYDAH0qt73EpT0amSS5rXrhpJ17rZAAzCaNPDw7Y=
 redis_port: 6380
 redis_use_password_auth: 1
 redis_use_tls: 1
-disable_replicated_console: true
 
 
 # TFE App settints - Log Forwarding - True = 1 False = 0

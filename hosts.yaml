@@ -1,0 +1,7 @@
+tfe:
+  hosts:
+    #172.176.250.204:
+      # Should be eth0 or equivilent, not docker0. Used by install.sh.
+      #tfe_private_ip: 172.30.0.4
+    20.97.233.217:
+      tfe_private_ip: 172.30.0.5
