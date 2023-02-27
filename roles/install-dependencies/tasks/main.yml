@@ -17,8 +17,3 @@
   apt:
     name: docker-ce=5:20.10.7~3-0~ubuntu-focal
     update_cache: true
-
-# airgap = true + $install_docker_before = true
-# jq
-# unzip
-# docker
