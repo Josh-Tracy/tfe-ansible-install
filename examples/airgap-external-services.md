@@ -69,14 +69,13 @@ production_type: external
 disk_path: null
 capacity_concurrency: 10
 capacity_memory: 512
-enable_active_active: 0
 enable_metrics_collection: 0
 metrics_endpoint_enabled: 0
 metrics_endpoint_port_http: null
 metrics_endpoint_port_https: null
 extra_no_proxy: null
 force_tls: 0
-hairpin_addressing: 0
+hairpin_addressing: 1
 pg_dbname: tfe
 pg_netloc: tfe.postgres.database.azure.com:5432
 pg_password: mypostpass1!
@@ -89,10 +88,12 @@ s3_app_bucket_region: us-east-1
 s3_use_kms: true
 s3_sse_kms_key_id: arn:aws:kms:us-east-1:123456789:key/1111111-2222-3333-444-5555555555
 tbw_image: null
-http_proxy: null
+http_proxy: false
+http_proxy_name: null
 
 
 # TFE App Settings - active/active - True = 1 False = 0
+enable_active_active: 0
 redis_host: null
 redis_pass: null
 redis_port: null

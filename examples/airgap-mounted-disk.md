@@ -39,7 +39,7 @@ ca_bundle_name: tfe-ca-bundle.pem
 # Custom certificate authority (CA) bundle. 
 # JSON does not allow raw newline characters, so replace any newlines in the data with \n.
 # The command awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' tfe-ca-bundle.pem can assist.
-ca_cert_data: -----BEGIN CERTIFICATE-----\nMIIFIDCCBAigAwIBAgISA0t9452nQ7vgwYP4F+v/...+Q=\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIFFjCCAv6gAwIBAgIRAJErCErPDBinU/bWLiWnX1owDQYJKoZIhvcNAQELBQAw\nTzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3Vy...+XWYp6rjd5JW1zbVWEkLNxE7GJThEUG3szgBVGP7pSWTUTsqX\nnLRbwHOoq7hHwg==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIFYDCCBEigAwIBAgIQQAF3ITfU6UK47naqPGQKtzANBgkqhkiG9w0BAQsFADA/\nMSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT\nDkRTVCBSb290IENB...+qR9sdjoSYKEBpsr6GtPAQw4dy753ec5\n-----END CERTIFICATE-----\n
+ca_cert_data: -----BEGIN CERTIFICATE-----\nMIIFIDCCBAigAwIBAgISA0t9452nQ7vgwYP4F+v/.....+qR9sdjoSYKEBpsr6GtPAQw4dy753ec5\n-----END CERTIFICATE-----\n
 
 # TFE File Names
 license_name: tfe-license.rli
@@ -66,7 +66,6 @@ production_type: disk
 disk_path: /opt/terraform-enterprise
 capacity_concurrency: 10
 capacity_memory: 512
-enable_active_active: 0
 enable_metrics_collection: 0
 metrics_endpoint_enabled: 0
 metrics_endpoint_port_http: null
@@ -79,14 +78,19 @@ pg_netloc: null
 pg_password: null
 pg_user: null
 restrict_worker_metadata_access: 1
+custom_s3_endpoint: false
 s3_app_endpoint_url: null
 s3_app_bucket_name: null
 s3_app_bucket_region: null
+s3_use_kms: false
+s3_sse_kms_key_id: null
 tbw_image: null
-http_proxy: null
+http_proxy: false
+http_proxy_name: null
 
 
 # TFE App Settings - active/active - True = 1 False = 0
+enable_active_active: 0
 redis_host: null
 redis_pass: null
 redis_port: null

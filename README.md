@@ -7,9 +7,9 @@ Hashicorp does not create or maintain this repository. This is a personal reposi
 When there is a need to install Terraform Enterprise on long lived, static, virtual machines or bare-metal servers. If installing on a cloud service provider, such as AWS, Azure, or GCP, the preferred method is to use Terraform open source to automate this deployment in an autoscaling group utilizing user_data scripts.
 
 ## How to Use
-`install.yaml` is the main entry point for installing TFE with Ansible. It calls the specific roles you enable depending on what you are trying to accomplish. You can enable and disable roles at will by editing the variables in `group_vars/tfe.yaml`
+`install.yaml` is the main entry point for installing TFE with Ansible. It calls the specific roles you enable depending on what you are trying to accomplish. You can enable and disable roles at will by editing the variables at the top of `group_vars/tfe.yaml`. This saves time when troubleshooting and running the playbook over and over.
 
-Example install.yaml:
+Example roles in install.yaml:
 
 ```YAML
 - name : Install dependencies
@@ -34,11 +34,11 @@ install_tfe_enabled: true
 ```
 ## Setup - Verify Host Connection
 
-1. Add the ip address or FQDN of the server that TFE will be installed on to the `hosts` file under the `tfe` host group.
+1. Add the ip address or FQDN of the server that TFE will be installed on to the `hosts.yaml` file under the `tfe` host group.
 2. Put the ssh private key .pem in this directory, or somewhere ansible can reach it on the ansible control node.
 3. Add the path the to ssh private key and the ssh username to the `group_vars/tfe.yaml` file.
 4. Run `ansible tfe -m ping -i hosts` to test the connection to the host (note: This may fail if ICMP pings are blocked)
-5. Populate the rest of the variables in `group_vars/tfe.yaml` using the table in this README as a guide.
+5. Populate the rest of the variables in `group_vars/tfe.yaml` using the table in this README as a guide and the examples directory.
 
 
 ## Setup - Install Files and TLS Certificates
@@ -107,20 +107,27 @@ For active/active installs, follow the directions in `examples/active-active.md`
 | metrics_endpoint_enabled  | 0 or 1. Whether or not to enable metrics collection endpoint       | yes          |
 | metrics_endpoint_port_http | 0 or 1. Metrics collection http port     | no          |
 | metrics_endpoint_port_https |  0 or 1. Metrics collection https port       |no         |
-| extra_no_proxy  | The name of the license file in the roles/copy-files/file directory       | test          |
-| force_tls  | The name of the license file in the roles/copy-files/file directory       | test          |
-| hairpin_addressing   | The name of the license file in the roles/copy-files/file directory       | test          |
-| pg_dbname   | The name of the license file in the roles/copy-files/file directory       | test          |
-| pg_netloc   | The name of the license file in the roles/copy-files/file directory       | test          |
-| pg_password   | The name of the license file in the roles/copy-files/file directory       | test     |
-| pg_user   | The name of the license file in the roles/copy-files/file directory       | test          |
-| restrict_worker_metadata_access  | The name of the license file in the roles/copy-files/file directory       | test          |
-| custom_s3_endpoint                    | The name of the license file in the roles/copy-files/file directory       | test          |
-| s3_app_endpoint_url                    | The name of the license file in the roles/copy-files/file directory       | test          |
-| s3_app_bucket_name                    | The name of the license file in the roles/copy-files/file directory       | test          |
-| s3_app_bucket_region                    | The name of the license file in the roles/copy-files/file directory       | test          |
-| s3_use_kms                    | The name of the license file in the roles/copy-files/file directory       | test          |
-| s3_sse_kms_key_id                    | The name of the license file in the roles/copy-files/file directory       | test          |
-| tbw_image                    | The name of the license file in the roles/copy-files/file directory       | test          |
-| http_proxy                    | The name of the license file in the roles/copy-files/file directory       | test          |
-| enable_active_active                    | The name of the license file in the roles/copy-files/file directory       | test          |
+| extra_no_proxy  | When configured to use a proxy, a , (comma) separated list of hosts to exclude from proxying. Please note that this list does not support whitespace characters. For example: 127.0.0.1,tfe.myapp.com,myco.github.com        | no          |
+| force_tls  | 0 or 1. When set, TFE will require all application traffic to use HTTPS by sending a 'Strict-Transport-Security' header value in responses, and marking cookies as secure. A valid, trusted TLS certificate must be installed when this option is set, as browsers will refuse to serve webpages that have an HSTS header set that also serve self-signed or untrusted certificates.       | yes          |
+| hairpin_addressing   | 0 or 1. When set, TFE services will direct traffic destined for the installation's FQDN toward the instance's internal IP address. This is useful for cloud environments where HTTP clients running on instances behind a load balancer cannot send requests to the public hostname of that load balancer       | yes          |
+| pg_dbname   | The name of the pg database when using external services | Only when using external services        |
+| pg_netloc   | The FQDN:port or IP:port  of the pg database when using external services      | Only when using external services          |
+| pg_password   | The password for the pg database when using external services       | Only when using external services     |
+| pg_user   | The user to authenticate as when using external services       | Only when using external services          |
+| restrict_worker_metadata_access  | 0 or 1. Prevents the environment where Terraform operations are executed from accessing the cloud instance metadata service. This should not be set when Terraform operations rely on using instance metadata (i.e., the instance IAM profile) as part of the Terraform provider configuration. Note: a bug in Docker version 19.03.3 prevents this setting from working correctly. Operators should avoid using this Docker version when enabling this setting.       | yes          |
+| custom_s3_endpoint  | true or false. Whether or not you will be providing an s3 endpoint or using the defaults. If you set this to false, TFE will use the defaults automagically. If true, you must provide an endpoint       | yes         |
+| s3_app_endpoint_url  | The endpoint URL for s3 object storage. Only needed if `custom_s3_endpoint: true`        | no          |
+| s3_app_bucket_name  | The name of the s3 bucket.       | Only when using external services          |
+| s3_app_bucket_region  | The region of the s3 bucket. Set to us-east-1 for self hosts s3 storage.       | Only when using external services          |
+| s3_use_kms  | true or false. If the s3 bucket is encrypted with kms or not.     | Only when using external services          |
+| s3_sse_kms_key_id   | The kms key id if `s3_use_kms: true `  | Only when using external services and KMS      |
+| tbw_image | Set this to custom_image if you want to use an alternative Terraform build worker image (the default is default_image).   | no     |
+| http_proxy   | true or false. Whether or not a proxy  is being used in the environment  | yes         |
+| http_proxy_name  | If a proxy is being used, the FQDN or IP of the proxy to be passed to the install.sh script  | Only if http_proxy is true         |
+| redis_host | The redis hostname      | Only if using active/active  |
+| redis_pass | The redis password if using password authentication       | Only if using active/active  |
+| redis_port | The redis port to connect on       | Only if using active/active  |
+| redis_use_password_auth | 0 or 1. Whether or not to use password authentication to redis      | Only if using active/active  |
+| redis_use_tls | 0 or 1. Whether or not to use TLS with redis       | Only if using active/active  |
+| log_forwarding_enabled | 0 or 1. Whether or not to enable log forwarding       | yes  |
+| log_forwarding_config | 0 or 1. Whether or not to enable active active architecture.       | yes  |

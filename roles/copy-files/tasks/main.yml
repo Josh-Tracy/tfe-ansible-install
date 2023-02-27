@@ -59,16 +59,3 @@
     src: "{{repl_bundle_path}}/{{replicated_tar_name}}"
     dest: "{{tfe_installer_dir}}"
     remote_src: yes
-    
-
-
-
-
-###
-# if airgap = false
-# cp .rli
-# cp. certs - key - ca bundle
-
-# if airgap = true 
-# cp .airgap .rli. certs replicated tar install.sh
-###

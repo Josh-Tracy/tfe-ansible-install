@@ -2,7 +2,6 @@
 # tasks file for uninstall-tfe
 
 - name: Copy the uninstall script to host
-  when: airgap_install
   copy:
     src: files/uninstall.sh
     dest: "{{tfe_installer_dir}}/uninstall.sh"
