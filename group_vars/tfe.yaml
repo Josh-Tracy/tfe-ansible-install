@@ -1,10 +1,24 @@
+### --- Start RHEL7 Specific --- ###
+# If docker_from_centos is false, the task assumes repos with docker packages are enabled on the host
+docker_from_centos: true
+# If firewalld is on. This will add docker0 interface to the trusted zone
+use_firewalld_enabled: true
+# Ansible's firewalld module requires python-firewall, which may only be available in python2
+firewalld_ansible_python_interpreter: /usr/bin/python2.7
+# If selinux is enabled. When using mounted disk this sets the context for the mounted disk path
+selinux_enforcing: true
+### --- End RHEL7 Specific --- ###
+
 # Enable or Disable Ansible Roles
 install_dependencies_enabled: true
 copy_files_enabled: true
 install_tfe_enabled: true
 
+# If you desire to use a particular python interperter version on the remote host.
+ansible_python_interpreter: /usr/bin/python3.6
+
 # SSH Settings
-ansible_ssh_private_key_file: key.pem
+ansible_ssh_private_key_file: tfe.pem
 ansible_user: user
 
 # Airgap Settings
@@ -34,7 +48,7 @@ ca_bundle_name: tfe-ca-bundle.pem
 # Custom certificate authority (CA) bundle. 
 # JSON does not allow raw newline characters, so replace any newlines in the data with \n.
 # The command awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' tfe-ca-bundle.pem can assist.
-ca_cert_data: -----BEGIN CERTIFICATE-----\12345678\n-----END CERTIFICATE-----\n
+ca_cert_data: null
 
 # TFE File Names
 license_name: tfe-license.rli
@@ -48,7 +62,7 @@ console_password: mytfeconsolepass
 encryption_password: mytfeencpass
 
 # TFE install settings - Replicated config file
-tfe_hostname: tfe.mycompany.com
+tfe_hostname: my.company.com
 tfe_release_sequence: 681
 tls_bootstrap_type: server-path
 remove_import_settings_from: "false"

@@ -1,0 +1,18 @@
+# when using SElinux and Mounted Disk, run this AFTER the application installed
+- name: When selinux is enabled on RHEL7 mounted disk installs, set the context for the install directory.
+  hosts: tfe
+  become: yes
+  tasks:
+
+    - name: "[RHEL7]+[Mounted Disk]+[SELinux] Add the container_file_t type to the SELinux context for the mounted disk path and its subdirectories"
+      when: (mounted_disk and selinux_enforcing and ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
+      sefcontext:
+        target: "{{disk_path}}(/.*)?"
+        setype: container_file_t
+        state: present
+      vars: 
+        ansible_python_interpreter: "{{firewalld_ansible_python_interpreter}}"
+
+    - name: "[RHEL7]+[Mounted Disk]+[SELinux]Apply new SELinux file context to filesystem"
+      when: (mounted_disk and selinux_enforcing and ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
+      command: restorecon -R {{disk_path}}
