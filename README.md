@@ -72,7 +72,12 @@ For active/active installs, follow the directions in `examples/active-active.md`
 ### Variables
 
 |    Variable                           |    Description    |    Required   |
-| ---------                             | ---------         | ---------     |
+| --- | --- | --- |
+| ansible_python_interpreter      | The python interpertor to use on the remote host         | no     |
+| firewalld_ansible_python_interpreter | If using firewalld and selinux, python 2 interpertor must be used. Sometimes you may need to provide a different python interpertor for these tasks vs the rest of the playbooks.         | Only when using firewalld or selinux on RHEL 7   |
+| docker_from_centos | true or false. Whether or not to install and use the CentOS repos to install docker. If false, the playbooks assume the packages are available from a repo enabled already.      | Only when you do not have a repo enabled that provides docker on RHEL7     |
+| use_firewalld_enabled | true or false. Whether or not firewalld is enabled on the remote host.         | Only when using rhel7     |
+| selinux_enforcing| true or false. Is SElinux enforcing on the remote host         | Only when using rhel7     |
 | tfe_private_ip | The private IP of the host that install.sh will use when installing TFE | yes |
 | install_dependencies_enabled | true or false. Enable the role to install dependencies on the TFE host | yes |
 | copy_files_enabled | true or false. Enable the role to copy files to the TFE host | yes  |
@@ -99,6 +104,7 @@ For active/active installs, follow the directions in `examples/active-active.md`
 | replicated_tar_name  | The name of the replicated.tar.gz file in the roles/copy-files/file directory       | Only if airgap_install: true           |
 | console_password  | The replicated admin console password at port 8800 | yes          |
 | encryption_password | The encyption password for the internal vault. Must be the same on all TFE nodes when using active/active | yes          |
+| tfe_hostname | FQDN of the TFE server that is ALSO a valid name on your TLS/SSL certificate | yes          |
 | tfe_release_sequence | The TFE release sequence to use if online install when airgap_install: false | yes |
 | tls_bootstrap_type | The name of the license file in the roles/copy-files/file directory | yes         |
 | remove_import_settings_from | true or false. Whether or not to remove the tfe-settings.json file after install is complete. | yes  |

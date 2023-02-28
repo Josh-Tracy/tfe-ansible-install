@@ -2,26 +2,26 @@
 # tasks file for install-dependencies
 
 # Ubuntu
-- name: Add Docker GPG apt Key
+- name: "[Ubuntu] Add Docker GPG apt Key"
   when: ansible_facts['distribution'] == "Ubuntu"
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
-- name: Add Docker Repository
+- name: "[Ubuntu] Add Docker Repository"
   when: ansible_facts['distribution'] == "Ubuntu"
   apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu focal stable
     state: present
 
-- name: Update apt and install docker-ce
+- name: "[Ubuntu] Update apt and install docker-ce"
   when: ansible_facts['distribution'] == "Ubuntu"
   apt:
     name: docker-ce=5:20.10.7~3-0~ubuntu-focal
     update_cache: true
 
 # RHEL7
-- name: Install required packages [yum-utils, device-mapper-persistent-data, lvm2]
+- name: "[RHEL7] Install required packages [yum-utils, device-mapper-persistent-data, lvm2]"
   when: (ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
   yum:
     name: "{{ item }}"
@@ -31,7 +31,7 @@
     - device-mapper-persistent-data
     - lvm2
 
-- name: Add Docker repo from CentOS repos [edge]
+- name: "[RHEL7] Add Docker repo from CentOS repos [edge] if docker_from_centos is true"
   when: (docker_from_centos and ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
   yum_repository:
     name: docker-ce-edge
@@ -39,8 +39,9 @@
     description: docker centos edge repo
     baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/edge/
     enabled: yes
+    gpgcheck: no
 
-- name: Add Docker repo from CentOS repos [test]
+- name: "[RHEL7] Add Docker repo from CentOS repos [test] if docker_from_centos is true"
   when: (docker_from_centos and ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
   yum_repository:
     name: docker-ce-test
@@ -48,8 +49,19 @@
     description: docker centos test repo
     baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/test/
     enabled: yes
+    gpgcheck: no
 
-- name: Install Docker
+- name: "[RHEL7] CentOS extras repo for [container-selinux] if docker_from_centos is true"
+  when: (docker_from_centos and ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
+  yum_repository:
+    name: centos7-extras
+    file: centos7-extras
+    description: "CentOS-$releasever - Extras"
+    baseurl: "http://mirror.centos.org/centos/7/extras/$basearch/"
+    enabled: yes
+    gpgcheck: no
+
+- name: "[RHEL7] Install Docker"
   when: (ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
   yum:
     name:
@@ -60,7 +72,17 @@
     state: present
     update_cache: true
 
-- name: Start Docker service
+- name: "[RHEL7]+[firewalld_enabled] Add docker0 to firewalld as a trusted zone interface is use_firewalld_enabled true"
+  when: (use_firewalld_enabled and ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
+  ansible.posix.firewalld:
+    zone: trusted
+    interface: docker0
+    permanent: true
+    state: enabled
+  vars: 
+    ansible_python_interpreter: "{{firewalld_ansible_python_interpreter}}"
+
+- name: "[RHEL7] Start Docker service"
   when: (ansible_facts['distribution'] == "RedHat" and ansible_distribution_major_version == "7")
   service:
     name: docker
