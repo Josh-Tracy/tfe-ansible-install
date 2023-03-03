@@ -5,7 +5,7 @@
 {% if airgap_install == true %}
   "LicenseBootstrapAirgapPackagePath": "{{ tfe_airgap_path }}/{{ airgap_bund_name }}",
 {% else %}
-  "ReleaseSequence": "{{ tfe_release_sequence }}",
+  "ReleaseSequence": {{ tfe_release_sequence }},
 {% endif %}
   "LicenseFileLocation": "{{ tfe_license_path }}/{{ license_name }}",
   "TlsBootstrapHostname": "{{ tfe_hostname }}",
