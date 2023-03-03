@@ -1,0 +1,31 @@
+# Upgrade TFE airgap
+- name: Upgrade Airgap Install to newer version
+  hosts: tfe
+  become: yes
+  tasks:
+
+    - name: Copy .airgap and replicated.tar.gz from control node if files_on_system is false and airgap_install is true
+      when:  (not files_on_system) and (airgap_install)
+      copy:
+        src: "{{ item.src }}" 
+        dest: "{{ item.dest }}"
+        mode: '0644'
+      loop:
+        - src: "roles/copy-files/files/{{airgap_bund_name}}"
+          dest: "{{tfe_airgap_path}}"
+        - src: "roles/copy-files/files/{{replicated_tar_name}}"
+          dest: "{{repl_bundle_path}}"
+
+    - name: Unarchive replicated tarball for airgap install
+      when: airgap_install
+      unarchive:
+        src: "{{repl_bundle_path}}/{{replicated_tar_name}}"
+        dest: "{{tfe_installer_dir}}"
+        remote_src: yes
+
+    - name: Upgrade to the desired version of the available airgap packages.
+      when: airgap_install
+      command: replicatedctl app-release apply --sequence "{{upgrade_target_version}}"
+      register: upgrade_out
+
+    - debug: msg="{{ upgrade_out }}"

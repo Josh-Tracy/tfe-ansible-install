@@ -100,8 +100,8 @@ For active/active installs, follow the directions in `examples/active-active.md`
 | ca_bundle_name  | The name of the tfe CA custom bundle in the roles/copy-files/file directory  | Only if using a CA bundle.          |
 | ca_cert_data  | A one line string with no new lines that contains the custom CA bundle  | Only if using a CA bundle.  |
 | license_name   | The name of the license file in the roles/copy-files/file directory  | yes   |
-| airgap_bund_name | The name of the .airgap file in the roles/copy-files/file directory   | Only if airgap_install: true    |
-| replicated_tar_name  | The name of the replicated.tar.gz file in the roles/copy-files/file directory       | Only if airgap_install: true           |
+| airgap_bund_name | NO SPACES! The name of the .airgap file in the roles/copy-files/file directory   | Only if airgap_install: true    |
+| replicated_tar_name  | NO SPACES! The name of the replicated.tar.gz file in the roles/copy-files/file directory       | Only if airgap_install: true           |
 | console_password  | The replicated admin console password at port 8800 | yes          |
 | encryption_password | The encyption password for the internal vault. Must be the same on all TFE nodes when using active/active | yes          |
 | tfe_hostname | FQDN of the TFE server that is ALSO a valid name on your TLS/SSL certificate | yes          |
