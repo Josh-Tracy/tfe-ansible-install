@@ -112,3 +112,6 @@ redis_use_tls: null
 # TFE App settints - Log Forwarding - True = 1 False = 0
 log_forwarding_enabled: 0
 log_forwarding_config: null
+
+# Upgrades - Airgap
+upgrade_target_version: "681"
