@@ -143,3 +143,4 @@ For active/active installs, follow the directions in `examples/active-active.md`
 | redis_use_tls | 0 or 1. Whether or not to use TLS with redis       | Only if using active/active  |
 | log_forwarding_enabled | 0 or 1. Whether or not to enable log forwarding       | yes  |
 | log_forwarding_config | 0 or 1. Whether or not to enable active active architecture.       | yes  |
+| upgrade_target_version | The version of TFE you want to upgade to | Only when using airgap install mode.
