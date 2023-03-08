@@ -1,4 +1,4 @@
-# Upgrading TFE Versions
+# Upgrading TFE Versions - Standalone TFE
 
 ## Before Upgrading
 Read up on the documentation https://developer.hashicorp.com/terraform/enterprise/admin/infrastructure/upgrades#before-upgrade
