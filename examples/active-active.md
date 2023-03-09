@@ -18,17 +18,21 @@ tfe:
 ```
 
 ## Steps to Active/Active
+
+Taken from https://developer.hashicorp.com/terraform/enterprise/install/automated/active-active The steps here are modified from the documentation to account for stateful virtual machines being used instead of an autoscaling group.
+
 1. Run the `install.yaml` playbook against a single host in the `tfe` host group to perform 1 standalone installation with active/active disabled.
 2. Login, create the admin user and Organization, and verify you can perform a terraform apply.
-3. Run the `uninstall.yaml` playbook to uninstall TFE from the host.
+3. Run the `uninstall.yaml` playbook to uninstall TFE from the host. This is the equivilent of autoscaling down to 0 nodes.
 4. Modify the `group_vars/tfe.yaml` variables to configure active/active.
-5. Run the `install.yaml` playbook against the host in the `tfe` host group again to reconnect it to external services and redis.
+5. Run the `install.yaml` playbook against the host in the `tfe` host group again to reinstall and reconnect it to external services and redis.
 >Note: This will disable port 8800 replicated admin console UI.
 6. Login and perform a terraform apply to ensure Redis is working properly.
 7. Add the other tfe hosts under the `tfe` group in the `hosts.yaml` file.
 9. Run the `install.yaml` playbook to install TFE on all the nodes you desire at once (up to 5 supported per cluster).
 10. SSH into those nodes are run `replicatedctl app status` to verify a healthy application launch.
 11. Run a few terraform plans and applys to verify the application functionality.
+12. You can SSH into each node and run `docker ps` to look for `tfe-build-worker` container starting up as your perform a terraform run to verify runs are being split across the TFE nodes. The TFE nodes poll Redis for run requests and the node with available capacity at the time it polls recieves the run. There is no logic other than that to decided which node gets wich run. 
 
 ## Example Inputs for Active/Active
 

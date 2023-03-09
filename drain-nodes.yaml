@@ -1,0 +1,11 @@
+# Drain TFE nodes to complete ongoing work and stop new work from occuring
+- name: Drain TFE nodes. Complete ongoing work. Stop any new work from occuring.
+  hosts: tfe
+  become: yes
+  tasks:
+
+    - name: Run replicated admin node-drain command
+      shell: replicated admin node-drain
+      register: drain_out
+
+    - debug: msg="{{ drain_out }}"

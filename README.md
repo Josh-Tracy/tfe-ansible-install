@@ -1,4 +1,4 @@
-# Ansible Playbooks for Install Terraform Enterprise
+# Ansible Playbooks for Installing Terraform Enterprise
 
 ## Notice
 Hashicorp does not create or maintain this repository. This is a personal repository.
@@ -98,7 +98,7 @@ For active/active installs, follow the directions in `examples/active-active.md`
 | tfe_cert_name  | The name of the tfe cert in the roles/copy-files/file directory | yes          |
 | tfe_privkey_name  | The name of the tfe cert private key in the roles/copy-files/file directory  | yes          |
 | ca_bundle_name  | The name of the tfe CA custom bundle in the roles/copy-files/file directory  | Only if using a CA bundle.          |
-| ca_cert_data  | A one line string with no new lines that contains the custom CA bundle  | Only if using a CA bundle.  |
+| ca_cert_data  | A one line string with no new lines that contains the custom CA bundle. Use the command `awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' roles/copy-files/files/fullchain1.pem` to get the correct output.  | Only if using a CA bundle.  |
 | license_name   | The name of the license file in the roles/copy-files/file directory  | yes   |
 | airgap_bund_name | NO SPACES! The name of the .airgap file in the roles/copy-files/file directory   | Only if airgap_install: true    |
 | replicated_tar_name  | NO SPACES! The name of the replicated.tar.gz file in the roles/copy-files/file directory       | Only if airgap_install: true           |

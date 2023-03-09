@@ -1,0 +1,32 @@
+- name: Update TFE application settings on 1 TFE Node
+  hosts: tfe[0]
+  become: yes
+  tasks:
+
+    - name: Run replicated admin app-config -k "{{update_key}}" -v "{{update_value}}"
+      shell: replicated admin app-config -k "{{update_key}}" -v "{{update_value}}"
+      register: update_out
+
+    - debug: msg="{{ update_out }}"
+
+- name: Restart replicated on all nodes
+  hosts: tfe
+  become: yes
+  tasks:
+
+    - name: Stop replicated
+      shell: replicatedctl app stop
+      register: stop_out
+
+    - debug: msg="{{ stop_out }}"
+
+    - name: Pause for 2 minutes to wait for replicated to stop
+      ansible.builtin.pause:
+        minutes: 2
+
+    - name: Start replicated
+      shell: replicatedctl app start
+      register: start_out
+
+    - debug: msg="{{ start_out }}"
+
