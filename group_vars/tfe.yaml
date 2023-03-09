@@ -18,11 +18,11 @@ install_tfe_enabled: true
 ansible_python_interpreter: /usr/bin/python3.6
 
 # SSH Settings
-ansible_ssh_private_key_file: tfe.pem
-ansible_user: user
+ansible_ssh_private_key_file: tfe-key.pem
+ansible_user: tfeadmin
 
 # Airgap Settings
-airgap_install: false
+airgap_install: true
 pkg_repos_reachable_with_airgap: true
 install_docker_before: true
 
@@ -42,8 +42,8 @@ repl_conf_path: /etc/replicated.conf
 # TFE TLS Certificates file names. Certificates will go in the `tfe_config_dir` on the remote host
 # Certificates should be places in the roles/copy-files/files dir on the ansible control node
 tfe_cert_name: tfe-cert.pem  
-tfe_privkey_name: tfe-cert-key.pem
-ca_bundle_name: tfe-ca-bundle.pem
+tfe_privkey_name: tfe-privkey.pem
+ca_bundle_name: tfe-ca.pem
 
 # Custom certificate authority (CA) bundle. 
 # JSON does not allow raw newline characters, so replace any newlines in the data with \n.
@@ -54,7 +54,7 @@ ca_cert_data: null
 license_name: tfe-license.rli
 
 # Not required unless airgap_install: true
-airgap_bund_name: tfe-681.airgap
+airgap_bund_name: Terraform-Enterprise-681.airgap
 replicated_tar_name: replicated-2.54.1.tar.gz
 
 # TFE Install Secrets
@@ -62,8 +62,8 @@ console_password: mytfeconsolepass
 encryption_password: mytfeencpass
 
 # TFE install settings - Replicated config file
-tfe_hostname: my.company.com
-tfe_release_sequence: 681
+tfe_hostname: tfe.example.com
+tfe_release_sequence: 0
 tls_bootstrap_type: server-path
 remove_import_settings_from: "false"
 
@@ -113,5 +113,10 @@ redis_use_tls: null
 log_forwarding_enabled: 0
 log_forwarding_config: null
 
-# Upgrades - Airgap
+# Upgrades - Airgap - Must be in quotes (string)
 upgrade_target_version: "681"
+
+# Update App Settings - Use when running app-config-update.yaml
+update_key: capacity_concurrency
+# value must be in quotes (string)
+update_value: "12" 
