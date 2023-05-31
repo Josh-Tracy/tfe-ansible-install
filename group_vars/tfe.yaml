@@ -1,10 +1,12 @@
-### --- Start RHEL7 Specific --- ###
+### --- Start RHEL Specific --- ###
 # If docker_from_centos is false, the task assumes repos with docker packages are enabled on the host
 docker_from_centos: true
 # If firewalld is on. This will add docker0 interface to the trusted zone
 use_firewalld_enabled: true
 # Ansible's firewalld module requires python-firewall, which may only be available in python2
 firewalld_ansible_python_interpreter: /usr/bin/python2.7
+# If python 2.7 needs to be installed
+install_python_2_7: false
 # If selinux is enabled. When using mounted disk this sets the context for the mounted disk path
 selinux_enforcing: true
 ### --- End RHEL7 Specific --- ###

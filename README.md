@@ -96,7 +96,8 @@ These variables are relevent when using RHEL 7 OS. Can be ommited if you're not 
 
 |    Variable                           |    Description    |    Required   |
 | --- | --- | --- |
-| firewalld_ansible_python_interpreter | If using firewalld and selinux, python 2 interpertor must be used. Sometimes you may need to provide a different python interpertor for these tasks vs the rest of the playbooks.         | Only when using firewalld or selinux on RHEL 7   |
+| firewalld_ansible_python_interpreter | If using firewalld and selinux, python 2 interpreter must be used. Sometimes you may need to provide a different python interpreter for these tasks vs the rest of the playbooks.         | Only when using firewalld or selinux on RHEL 7   |
+| install_python_2_7 | If Python 2.7 needs to be installed | no
 | docker_from_centos | true or false. Whether or not to install and use the CentOS repos to install docker. If false, the playbooks assume the packages are available from a repo enabled already.      | Only when you do not have a repo enabled that provides docker on RHEL7     |
 | use_firewalld_enabled | true or false. Whether or not firewalld is enabled on the remote host.         | Only when using rhel7     |
 | selinux_enforcing| true or false. Is SElinux enforcing on the remote host?         | Only when using rhel7     |
