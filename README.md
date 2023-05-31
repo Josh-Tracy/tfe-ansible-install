@@ -1,18 +1,22 @@
 # Ansible Playbooks for Installing Terraform Enterprise
 
 ## Notice
+
 Hashicorp does not create or maintain this repository. This is a personal repository.
 
 ## When to Use
+
 When there is a need to install Terraform Enterprise on long lived, static, virtual machines or bare-metal servers. If installing on a cloud service provider, such as AWS, Azure, or GCP, the preferred method is to use Terraform open source to automate this deployment in an autoscaling group utilizing user_data scripts.
 
 ## Supported Operating Systems
+
 Only the following operating systems are supported. If you wish to use one not listed here, update `role/install-dependencies/tasks/main.yml` to download packages for the desired OS.
 
 - Ubuntu [focal]
 - RHEL [7]
 
 ## How to Use
+
 `install.yaml` is the main entry point for installing TFE with Ansible. It calls the specific roles you enable depending on what you are trying to accomplish. You can enable and disable roles at will by editing the variables at the top of `group_vars/tfe.yaml`. This saves time when troubleshooting and running the playbook over and over.
 
 Example roles in install.yaml:
@@ -38,6 +42,7 @@ install_dependencies_enabled: false
 copy_files_enabled: true
 install_tfe_enabled: true
 ```
+
 ## Setup - Verify Host Connection
 
 1. Add the ip address or FQDN of the server that TFE will be installed on to the `hosts.yaml` file under the `tfe` host group.
@@ -48,15 +53,18 @@ install_tfe_enabled: true
 
 
 ## Setup - Install Files and TLS Certificates
-A variable named `files_on_system` determines if files will be copied from the control node (where you run Ansible from) to the TFE node or not. When set to `false` the playbook will look in `roles/copy-files/files/` for the install files such as the install.sh, license.rli, airgap, and replicated.tar.gz file. and copy them to the remote TFE node. It will also do the same for TLS certifiactes. If set to `true` then you must have the files already placed in the `tfe_installer_dir` and `tfe_license_path` you provided in `group_vars/tfe.yaml` and certificates placed in the `tfe_config_dir`.
+
+A variable named `files_on_system` determines if files will be copied from the control node (where you run Ansible from) to the TFE node or not. When set to `false` the playbook will look in `roles/copy-files/files/` for the install files such as the install.sh, license.rli, airgap, and replicated.tar.gz file. and copy them to the remote TFE node. It will also do the same for TLS certificates. If set to `true` then you must have the files already placed in the `tfe_installer_dir` and `tfe_license_path` you provided in `group_vars/tfe.yaml` and certificates placed in the `tfe_config_dir`.
 
 ## Setup - Populate Input Variables
-Go through the availalbe input variables in `group_vars/tfe.yaml` and configure them to match your desired install. 
+
+Go through the available input variables in `group_vars/tfe.yaml` and configure them to match your desired install. 
 
 ## Running the Playbook - Standalone TFE server
+
 Once you are ready to install TFE run the command `ansible-playbook -i hosts.yaml install.yaml`. Time to complete will vary based on type of install (airgap vs online), network connections, and compute resources. Airgap installs take the longest if you have to copy the .airgap bundle to the remote host. 
 
-Once the playbook is complete, Ansible should return a debug message similiar to:
+Once the playbook is complete, Ansible should return a debug message similar to:
 
 ```json
             "To continue the installation, visit the following URL in your browser:",
@@ -67,6 +75,7 @@ Once the playbook is complete, Ansible should return a debug message similiar to
 You should now be able to access the replicated admin console at port 8800, but TFE will take another 10 to 15 minutes to finish the automated install. You can watch this from the dashboard. 
 
 ## Active/Active
+
 For active/active installs, follow the directions in `examples/active-active.md`
 
 ### Variables
@@ -74,15 +83,17 @@ For active/active installs, follow the directions in `examples/active-active.md`
 Input variables for group_vars and their descriptions. Divided into sections. Some variables are repeated in multiple sections. This is on purpose.
 
 #### Ansible Connection Variables
+
 These variables control how Ansible connects to the remote hosts.
 
 |    Variable                           |    Description    |    Required   |
 | --- | --- | --- |
-| ansible_python_interpreter      | The python interpertor to use on the remote host.         | no     |
+| ansible_python_interpreter      | The python interpreter to use on the remote host.         | no     |
 | ansible_ssh_private_key_file  | The SSH key Ansible will use to connect to the remote host as the ansible_user.              | yes          |
 | ansible_user  | The remote ssh user Ansible will try to connect as.              | yes          |
 
 #### Ansible Enabled/Disabled Roles Variables
+
 These variables control which Ansible roles are enabled in `install.yaml`. Helps speed up troubleshooting.
 
 |    Variable                           |    Description    |    Required   |
@@ -92,7 +103,8 @@ These variables control which Ansible roles are enabled in `install.yaml`. Helps
 | install_tfe_enabled  | true or false. Enable the role to install TFE  | yes    |
 
 #### RHEL 7 Variables
-These variables are relevent when using RHEL 7 OS. Can be ommited if you're not using RHEL 7. Ansible will detect what OS you are using.
+
+These variables are relevant when using RHEL 7 OS. Can be omitted if you're not using RHEL 7. Ansible will detect what OS you are using.
 
 |    Variable                           |    Description    |    Required   |
 | --- | --- | --- |
@@ -103,7 +115,8 @@ These variables are relevent when using RHEL 7 OS. Can be ommited if you're not 
 | selinux_enforcing| true or false. Is SElinux enforcing on the remote host?         | Only when using rhel7     |
 
 #### Active / Active Variables
-These variables are relevent for using active/active. `run_install.sh` and `tfe-settings.json` are templated based on these values.
+
+These variables are relevant for using active/active. `run_install.sh` and `tfe-settings.json` are templated based on these values.
 
 |    Variable                           |    Description    |    Required   |
 | --- | --- | --- |
@@ -115,6 +128,7 @@ These variables are relevent for using active/active. `run_install.sh` and `tfe-
 | redis_use_tls | 0 or 1. Whether or not to use TLS with redis.       | Only if using active/active.  |
 
 #### Install.sh Variables
+
 variables used to create the `run_install.sh` script. These values determine the flags that will be passed to `install.sh`.
 
 |    Variable                           |    Description    |    Required   |
@@ -128,14 +142,16 @@ variables used to create the `run_install.sh` script. These values determine the
 | tfe_private_ip | The private IP of the host that install.sh will use when installing TFE. Can be provided as a host var in hosts.yaml as well. | yes |
 
 #### Misc. Variables Used for Conditionals in The Playbooks
+
 These variables determine what actions Ansible takes during the installation.
 
 |    Variable                           |    Description    |    Required   |
 | --- | --- | --- |
-| files_on_system | true or false. Are the install files (install.sh, .airgap, etc.) and TLS certs already on the remote host? If true, ansible will NOT attempt to copy these files from roles/copy-files/files/ because it assumes you have already placed them in their  tfe_installer_dir, tfe_settings_path, tfe_airgap_path, tfe_license_path, and tfe_config_dir respectivley.           | yes          |
+| files_on_system | true or false. Are the install files (install.sh, .airgap, etc.) and TLS certs already on the remote host? If true, ansible will NOT attempt to copy these files from roles/copy-files/files/ because it assumes you have already placed them in their  tfe_installer_dir, tfe_settings_path, tfe_airgap_path, tfe_license_path, and tfe_config_dir respectively.           | yes          |
 | pkg_repos_reachable_with_airgap | true or false. If airgap_install = true, whether or not packages can be download from the internet. | Only with airgap_install: true|
 
 #### Replicated.conf Variables
+
 These variables are used to build replicated.conf
 
 |    Variable                           |    Description    |    Required   |
@@ -157,7 +173,8 @@ These variables are used to build replicated.conf
 | tfe_release_sequence | The TFE release sequence to use if online install when airgap_install: false | yes |
 | tls_bootstrap_type | Whether ot not TFE should generate its own certificates. Set to "server-path" when providing TLS certificates. | yes         |
 
-#### settings.json Variabes
+#### settings.json Variables
+
 These settings determine the configuration for tfe-settings.json and ultimatley the TFE application.
 
 |    Variable                           |    Description    |    Required   |
@@ -166,7 +183,7 @@ These settings determine the configuration for tfe-settings.json and ultimatley 
 | aws_secret_access_key | AWS Access key to connect to object storage.       | Only when using external services that require this such as S3, MinIO, HitachiS3, etc.          |
 | ca_bundle_name  | The name of the tfe CA custom bundle in the roles/copy-files/file directory  | Only if using a CA bundle.          |
 | ca_cert_data  | A one line string with no new lines that contains the custom CA bundle. Use the command `awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' roles/copy-files/files/fullchain1.pem` to get the correct output.  | Only if using a CA bundle.  |
-| encryption_password | The encyption password for the internal vault. Must be the same on all TFE nodes when using active/active. | yes          |
+| encryption_password | The encryption password for the internal vault. Must be the same on all TFE nodes when using active/active. | yes          |
 | mounted_disk  | true or false. Whether or not to use mounted disk or external services. | yes          |
 | production_type | "disk" or "external".       | yes          |
 | disk_path | The path to store app data is using production_type: disk.       | Only if using mounted disk       |
@@ -195,17 +212,20 @@ These settings determine the configuration for tfe-settings.json and ultimatley 
 | log_forwarding_config | Not supported at this time with this playbook.       | yes  |
 
 #### Airgap Related Variables
+
 |    Variable                           |    Description    |    Required   |
 | --- | --- | --- |
 | replicated_tar_name  | NO SPACES! The name of the replicated.tar.gz file in the roles/copy-files/file directory       | Only if airgap_install: true           |
 
 
 #### upgrade-airgap.yaml Variables
+
 |    Variable                           |    Description    |    Required   |
 | --- | --- | --- |
-| upgrade_target_version | The version of TFE you want to upgade to | Only when using airgap install mode. |
+| upgrade_target_version | The version of TFE you want to upgrade to | Only when using airgap install mode. |
 
 # app-config-update.yaml Variables
+
 |    Variable                           |    Description    |   yes  |
 | --- | --- | --- |
 | update_key | The key in settings.json you want to update. | yes |
