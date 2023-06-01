@@ -39,8 +39,8 @@
     - src: "files/{{replicated_tar_name}}"
       dest: "{{repl_bundle_path}}"
 
-- name: Copy tfe certificate, cert key, and ca bundle from control node if files_on_system is false
-  when: not files_on_system
+- name: Copy tfe certificate, cert key, and ca bundle from control node if files_on_system is false and the tls_bootstrap_type is "server-path"
+  when: (not files_on_system and tls_bootstrap_type == "server-path")
   copy:
     src: "{{ item.src }}" 
     dest: "{{ item.dest }}"
